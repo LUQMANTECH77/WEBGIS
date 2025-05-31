@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEBGIS Rekomendasi Pemupukan Pajale</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- Header -->
+    <header id="app-header">
+      <div class="container">
+        <div class="header-icons">
+          <i class="fas fa-seedling crop-icon-header"></i>
+          <i class="fas fa-wheat-alt crop-icon-header" style="animation-delay: 0.5s"></i>
+        </div>
+        <h1>WEBGIS REKOMENDASI PEMUPUKAN TANAMAN PAJALE</h1>
+        <div class="header-icons">
+          <i class="fas fa-tree crop-icon-header" style="animation-delay: 1s"></i>
+          <i class="fas fa-tractor crop-icon-header" style="animation-delay: 1.5s"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div id="main-content">
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-header">
+          <h2><i class="fas fa-info-circle"></i> INFORMASI SAWAH</h2>
+        </div>
+        
+        <div class="sidebar-content">
+          <!-- Sawah Selection -->
+          <div class="form-group">
+            <label for="sawah-select"><i class="fas fa-map-marked-alt"></i> Pilih Sawah:</label>
+            <select id="sawah-select" class="form-control">
+              <option value="1">Sawah PAK LUQMAN</option>
+              <option value="2">Sawah PAK MALIK</option>
+              <option value="3">Sawah Pak Ujang</option>
+              <option value="4">Sawah Timur</option>
+              <option value="5">Sawah Barat</option>
+              <option value="6">Sawah Utara</option>
+            </select>
+          </div>
+
+          <!-- Input Hasil Panen -->
+          <div class="form-group card">
+            <label for="input-n"><i class="fas fa-weight-hanging"></i> Input Hasil Panen (Ton):</label>
+            <input type="number" id="input-n" class="form-control" step="0.1" min="0" placeholder="Contoh: 5.2">
+            <button id="save-n-btn" class="btn btn-primary">
+              <i class="fas fa-save"></i> Simpan Nilai Nitrogen
+            </button>
+          </div>
+
+          <!-- Tab Navigation -->
+          <div class="tab-group">
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="recommendation">
+                <i class="fas fa-chart-pie"></i> Rekomendasi
+              </button>
+              <button class="tab-btn" data-tab="details">
+                <i class="fas fa-map-marker-alt"></i> Detail
+              </button>
+            </div>
+            
+            <!-- Recommendation Tab -->
+            <div id="recommendation-tab" class="tab-content active">
+              <div id="rekomendasi-pupuk" class="recommendation-card">
+                <div class="empty-state">
+                  <i class="fas fa-seedling"></i>
+                  <p>Pilih lahan dan input hasil panen untuk melihat rekomendasi</p>
+                </div>
+              </div>
+              
+              <div class="land-info">
+                <div class="info-item">
+                  <i class="fas fa-ruler-combined"></i>
+                  <div>
+                    <span class="label">Luas Lahan</span>
+                    <span id="land-area" class="value">0 Ha</span>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-route"></i>
+                  <div>
+                    <span class="label">Keliling</span>
+                    <span id="land-perimeter" class="value">0 m</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="chart-container">
+                <canvas id="fertilizer-chart"></canvas>
+              </div>
+            </div>
+            
+            <!-- Details Tab -->
+            <div id="details-tab" class="tab-content">
+              <!-- Rata-rata Kandungan (Selalu Tampil) -->
+              <div id="field-summary" class="field-summary">
+                <h3><i class="fas fa-chart-bar"></i> Rata-rata Kandungan</h3>
+                <div class="summary-grid">
+                  <div>
+                    <i class="fas fa-seedling"></i>
+                    <span>N: <span id="avg-nitrogen">0</span> ton</span>
+                  </div>
+                  <div>
+                    <i class="fas fa-flask"></i>
+                    <span>P: <span id="avg-phosphate">0</span> mg/kg</span>
+                  </div>
+                  <div>
+                    <i class="fas fa-atom"></i>
+                    <span>K: <span id="avg-kalium">0</span> mg/kg</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Detail Titik (Hanya Tampil Saat Dipilih) -->
+              <div id="point-details" class="point-detail" style="display: none;">
+                <h3><i class="fas fa-map-pin"></i> Detail Titik Terpilih</h3>
+                <div class="detail-grid">
+                  <!-- Konten akan diisi oleh JavaScript -->
+                </div>
+              </div>
+              
+              <button id="delete-point-btn" class="btn btn-danger" disabled>
+                <i class="fas fa-trash-alt"></i> Hapus Titik Terpilih
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button id="print-btn" class="btn btn-secondary">
+              <i class="fas fa-print"></i> Cetak Laporan
+            </button>
+            <button id="reset-view-btn" class="btn btn-outline">
+              <i class="fas fa-crosshairs"></i> Reset Peta
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Map Container -->
+      <main id="map-container">
+        <div id="map"></div>
+        <div id="map-controls">
+          <button id="zoom-in-btn" class="map-control-btn">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button id="zoom-out-btn" class="map-control-btn">
+            <i class="fas fa-minus"></i>
+          </button>
+          <!-- Tombol baru untuk toggle polygon -->
+          <button id="toggle-polygon-btn" class="map-control-btn" title="Toggle Polygon">
+            <i class="fas fa-vector-square"></i>
+          </button>
+          <!-- Tombol baru untuk toggle basemap -->
+          <button id="toggle-basemap-btn" class="map-control-btn" title="Ganti Basemap">
+            <i class="fas fa-layer-group"></i>
+          </button>
+          <button id="toggle-distance-btn" class="map-control-btn" title="Toggle Jarak">
+            <i class="fas fa-ruler"></i>
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="loader">
+      <div class="spinner"></div>
+      <p>Memuat data...</p>
+    </div>
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- PDF Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  
+  <!-- Application Scripts -->
+  <script src="fuzzySugeno.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
