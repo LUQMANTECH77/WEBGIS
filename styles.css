@@ -816,15 +816,17 @@ button, .btn {
     height: 100%;
   }
   
+  /* PERBAIKAN UTAMA: Tab group dan content */
   .tab-group {
     height: auto;
-    max-height: 35vh;
-    overflow-y: auto;
+    max-height: unset;
+    overflow-y: visible;
   }
   
   .tab-content {
-    max-height: 30vh;
-    overflow-y: auto;
+    max-height: unset;
+    overflow-y: visible;
+    flex: 1;
   }
   
   .recommendation-grid {
@@ -937,11 +939,11 @@ button, .btn {
   }
   
   .tab-group {
-    max-height: 45vh;
+    max-height: unset;
   }
   
   .tab-content {
-    max-height: 40vh;
+    max-height: unset;
   }
 }
 
