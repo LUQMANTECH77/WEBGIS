@@ -163,9 +163,8 @@ button, .btn {
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 #map-container {
@@ -796,19 +795,19 @@ button, .btn {
   #sidebar {
     width: 100%;
     height: 45%;
-    max-height: 45%;
     order: 2;
     padding: 12px;
-    overflow-y: auto;
     min-width: unset;
     border-right: none;
     border-top: 1px solid #c8e6c9;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
   
   #map-container {
     width: 100%;
     height: 55%;
-    min-height: 55%;
     order: 1;
   }
   
@@ -816,19 +815,48 @@ button, .btn {
     height: 100%;
   }
   
-  /* PERBAIKAN UTAMA: Tab group dan content */
+  /* PERBAIKAN UTAMA: Struktur sidebar */
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 12px;
+    overflow: hidden;
+  }
+  
+  /* Fixed section (atas) */
+  .sidebar-fixed {
+    flex-shrink: 0;
+  }
+  
+  /* Scrollable section (tengah) */
+  .sidebar-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+  
+  /* Action buttons (bawah) */
+  .action-buttons {
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  
+  /* Perbaikan tab group */
   .tab-group {
-    height: auto;
-    max-height: unset;
-    overflow-y: visible;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
   
   .tab-content {
-    max-height: unset;
-    overflow-y: visible;
     flex: 1;
+    overflow-y: auto;
+    min-height: 0;
   }
   
+  /* Rekomendasi */
   .recommendation-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -857,10 +885,6 @@ button, .btn {
   .action-buttons {
     flex-direction: column;
     gap: 8px;
-  }
-  
-  .map-control-group {
-    flex-direction: row;
   }
   
   #map-controls {
@@ -930,20 +954,10 @@ button, .btn {
 @media (max-width: 768px) and (orientation: landscape) {
   #sidebar {
     height: 60%;
-    max-height: 60%;
   }
   
   #map-container {
     height: 40%;
-    min-height: 40%;
-  }
-  
-  .tab-group {
-    max-height: unset;
-  }
-  
-  .tab-content {
-    max-height: unset;
   }
 }
 
