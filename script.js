@@ -8,9 +8,9 @@ const CONFIG = {
     maxNativeZoom: 19
   },
   thingspeak: {
-    channelId: '2975959',
-    apiKey: 'V60YE7ZXDELFM7HT',
-    url: `https://api.thingspeak.com/channels/2975959/feeds.json?api_key=V60YE7ZXDELFM7HT&results=180`
+    channelId: '2625391',
+    apiKey: 'E22JKJFSAT9OSD7K',
+    url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=2625391&results=180`
   },
   fields: {
     count: 6,
