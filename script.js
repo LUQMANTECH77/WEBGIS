@@ -1,993 +1,984 @@
-/* =============== VARIABLES & RESET =============== */
-:root {
-  --primary: #2E7D32;
-  --primary-light: #4CAF50;
-  --primary-dark: #1B5E20;
-  --secondary: #0288D1;
-  --accent: #FFA000;
-  --danger: #D32F2F;
-  --light: #F5F5F5;
-  --light-gray: #EEEEEE;
-  --medium-gray: #BDBDBD;
-  --dark: #212121;
-  --white: #FFFFFF;
-
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
-  color: var(--dark);
-  background-color: var(--light);
-  overflow: auto;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-
-body, input, select, button {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-
-button, .btn {
-  min-height: 40px;
-  font-size: 1rem;
-  width: 100%;
-  padding: 0.75rem;
-}
-
-/* =============== LAYOUT =============== */
-#app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
-
-#app-header {
-  height: 70px;
-  background: linear-gradient(135deg, #1b5e20, #2e7d32);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 var(--space-lg);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  z-index: 100;
-  flex-shrink: 0;
-}
-
-#app-header .container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-md);
-  position: relative;
-}
-
-#app-header h1 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-align: center;
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-icons {
-  display: flex;
-  gap: 15px;
-}
-
-.header-icon {
-  font-size: 1.8rem;
-  color: var(--accent);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-#main-content {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-#sidebar {
-  width: 380px;
-  min-width: 380px;
-  background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 100%);
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #c8e6c9;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  padding: var(--space-md);
-  position: relative;
-  z-index: 500;
-}
-
-.sidebar-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: white;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-md);
-  box-shadow: var(--shadow-sm);
-}
-
-.sidebar-header h2 {
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-#map-container {
-  flex: 1;
-  position: relative;
-}
-
-#map {
-  width: 100%;
-  height: 100%;
-  background: #f0f2f5;
-}
-
-/* =============== COMPONENTS =============== */
-.card {
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-normal);
-  margin-bottom: var(--space-md);
-  border: 1px solid #e0f2e9;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-md);
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-normal);
-  text-align: center;
-}
-
-.btn-primary {
-  background-color: var(--primary);
-  color: var(--white);
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-dark);
-}
-
-.btn-secondary {
-  background-color: var(--medium-gray);
-  color: var(--dark);
-}
-
-.btn-secondary:hover {
-  background-color: #757575;
-  color: var(--white);
-}
-
-.btn-danger {
-  background-color: var(--danger);
-  color: var(--white);
-}
-
-.btn-danger:hover {
-  background-color: #c62828;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--medium-gray);
-  color: var(--dark);
-}
-
-.btn-outline:hover {
-  background: var(--light-gray);
-}
-
-.form-group {
-  margin-bottom: var(--space-md);
-}
-
-.form-group label {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xs);
-  font-weight: 500;
-  color: var(--dark);
-  font-size: var(--text-sm);
-}
-
-.form-group label i {
-  color: var(--primary);
-  width: 16px;
-  text-align: center;
-  font-size: var(--text-base);
-}
-
-.form-control {
-  width: 100%;
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm);
-  transition: var(--transition-normal);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
-}
-
-.tab-group {
-  background: white;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  margin-bottom: var(--space-md);
-  overflow: hidden;
-  border: 1px solid #e0f2e9;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.tab-buttons {
-  display: flex;
-  border-bottom: 1px solid #e0f2e9;
-  background: #f1f8e9;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: #4a6b57;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.3s ease;
-}
-
-.tab-btn:hover {
-  background: rgba(46, 125, 50, 0.1);
-}
-
-.tab-btn.active {
-  color: #2e7d32;
-  border-bottom: 3px solid #2e7d32;
-  font-weight: 600;
-  background: white;
-}
-
-.tab-content {
-  display: none;
-  padding: var(--space-md);
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.tab-content.active {
-  display: flex;
-  flex-direction: column;
-}
-
-#map-controls {
-  position: absolute;
-  bottom: var(--space-md);
-  right: var(--space-md);
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.map-control-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1px solid var(--light-gray);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-normal);
-  font-size: var(--text-sm);
-}
-
-.map-control-btn:hover {
-  background: var(--light-gray);
-  transform: scale(1.05);
-}
-
-.circle-marker {
-  background: var(--primary);
-  color: var(--white);
-  font-weight: bold;
-  font-size: var(--text-sm);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-normal);
-}
-
-.circle-marker:hover {
-  transform: scale(1.1);
-  background: var(--primary-dark);
-}
-
-/* =============== UTILITY COMPONENTS =============== */
-#loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loader {
-  text-align: center;
-}
-
-.spinner {
-  border: 4px solid rgba(46, 125, 50, 0.2);
-  border-radius: 50%;
-  border-top: 4px solid var(--primary);
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto var(--space-sm);
-}
-
-.alert {
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-md);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  animation: slideIn 0.3s ease-out;
-  position: relative;
-  overflow: hidden;
-  font-size: var(--text-sm);
-}
-
-.alert::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-}
-
-.alert-success {
-  background: #E8F5E9;
-  color: var(--primary-dark);
-}
-
-.alert-success::before {
-  background: var(--primary-dark);
-}
-
-.alert-error {
-  background: #FFEBEE;
-  color: var(--danger);
-}
-
-.alert-error::before {
-  background: var(--danger);
-}
-
-.alert-warning {
-  background: #FFF8E1;
-  color: #FF8F00;
-}
-
-.alert-warning::before {
-  background: #FF8F00;
-}
-
-.alert-info {
-  background: #E3F2FD;
-  color: var(--secondary);
-}
-
-.alert-info::before {
-  background: var(--secondary);
-}
-
-.empty-state {
-  text-align: center;
-  padding: var(--space-xl) var(--space-md);
-  color: var(--medium-gray);
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius-md);
-  margin: var(--space-md) 0;
-}
-
-.empty-state i {
-  font-size: 3rem;
-  color: var(--light-gray);
-  margin-bottom: var(--space-md);
-  display: block;
-  animation: pulse 2s infinite;
-}
-
-.empty-state p {
-  font-size: var(--text-lg);
-  font-weight: 500;
-}
-
-.land-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  margin: var(--space-md) 0;
-}
-
-.info-item {
-  background: var(--light);
-  border-radius: var(--radius-sm);
-  padding: var(--space-sm);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.info-item i {
-  font-size: 1rem;
-  color: var(--primary);
-  width: 20px;
-  text-align: center;
-}
-
-.info-item .label {
-  display: block;
-  font-size: 0.7rem;
-  color: var(--medium-gray);
-}
-
-.info-item .value {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--dark);
-}
-
-.recommendation-card {
-  padding: var(--space-md) 0;
-}
-
-.recommendation-content {
-  margin-bottom: var(--space-md);
-}
-
-.chart-container {
-  height: 200px;
-  min-height: 200px;
-  margin-top: var(--space-md);
-  position: relative;
-  overflow: visible;
-  flex-shrink: 0;
-}
-
-.action-buttons {
-  display: flex;
-  gap: var(--space-sm);
-  margin-top: auto;
-  padding: var(--space-sm);
-  background: var(--white);
-  border-top: 1px solid var(--light-gray);
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-}
-
-/* =============== PERBAIKAN TAMPILAN REKOMENDASI =============== */
-.recommendation-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-sm);
-  margin: var(--space-md) 0;
-  flex-shrink: 0;
-}
-
-.recommendation-item {
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-  transition: transform 0.3s ease;
-}
-
-.recommendation-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-}
-
-.recommendation-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-}
-
-.recommendation-item.urea::after {
-  background-color: var(--primary-light);
-}
-.recommendation-item.sp36::after {
-  background-color: var(--secondary);
-}
-.recommendation-item.kcl::after {
-  background-color: var(--accent);
-}
-
-.recommendation-item i {
-  font-size: 1.2rem;
-  margin-bottom: var(--space-xs);
-  display: block;
-  color: inherit;
-}
-
-.recommendation-value {
-  font-weight: bold;
-  font-size: var(--text-lg);
-  margin: var(--space-xs) 0;
-  color: var(--dark);
-}
-
-.recommendation-label {
-  font-size: var(--text-sm);
-  color: var(--medium-gray);
-  margin-bottom: 2px;
-}
-
-.recommendation-rate {
-  font-size: var(--text-sm);
-  color: var(--dark);
-  font-weight: 500;
-}
-
-/* =============== PERBAIKAN TAB DETAIL =============== */
-.field-summary {
-  background: #f1f8e9;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 12px;
-  border: 1px solid #dcedc8;
-}
-
-.field-summary h3 {
-  font-size: var(--text-base);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-}
-
-.summary-grid > div {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-}
-
-.summary-grid i {
-  color: var(--primary);
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
-}
-
-.point-detail {
-  background: white;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-  border: 1px solid #e0f2e9;
-}
-
-.point-detail h3 {
-  font-size: var(--text-base);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  margin-top: var(--space-md);
-  font-size: var(--text-sm);
-}
-
-.detail-grid > div {
-  padding: var(--space-xs) 0;
-  border-bottom: 1px solid var(--light-gray);
-}
-
-.detail-grid span:first-child {
-  font-weight: 500;
-  color: var(--dark);
-  display: inline-block;
-  min-width: 90px;
-}
-
-/* =============== ANIMATIONS =============== */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes slideIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-/* =============== ELEGAN SIDEBAR =============== */
-.sidebar-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-}
-
-.form-group.card {
-  border-left: 4px solid var(--primary);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-sm);
-}
-
-.tab-group {
-  border: 1px solid #c8e6c9;
-  box-shadow: var(--shadow-sm);
-}
-
-/* =============== ICON PADI & JAGUNG =============== */
-.crop-icon-header {
-  font-size: 1.8rem;
-  color: #FFD700;
-  text-shadow: 0 0 5px rgba(0,0,0,0.2);
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0px); }
-}
-
-/* =============== PERBAIKAN TOMBOL CETAK =============== */
-#print-btn {
-  background-color: #ff9800;
-  color: white;
-  font-weight: bold;
-  border: none;
-  padding: 10px 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-
-#print-btn:hover {
-  background-color: #f57c00;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
-
-#print-btn i {
-  margin-right: 5px;
-}
-
-/* =============== RESPONSIVE DESIGN =============== */
-/* Perangkat mobile - orientasi portrait */
-@media (max-width: 768px) {
-  #app-container {
-    height: 100vh;
-    overflow: hidden;
+// =============== KONFIGURASI APLIKASI ===============
+const CONFIG = {
+  map: {
+    center: [-6.9, 107.6],
+    zoom: 16,
+    minZoom: 10,
+    maxZoom: 22,
+    maxNativeZoom: 19
+  },
+  thingspeak: {
+    channelId: '2625391',
+    apiKey: 'E22JKJFSAT9OSD7K',
+    url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=E22JKJFSAT9OSD7K&results=180`
+  },
+  fields: {
+    count: 6,
+    pointsPerField: 30
+  }
+};
+
+// =============== VARIABEL GLOBAL ===============
+let map;
+let allPoints = [];
+let markers = [];
+let polygonLayer = null;
+let currentField = 1;
+let manualNitrogen = {};
+let selectedPoint = null;
+let fertilizerChart = null;
+let showDistanceLabels = true;
+let baseLayers = {};
+let currentBasemap = 'osm';
+let showPolygon = true;
+let tileErrorDisplayed = false;
+
+// =============== INISIALISASI APLIKASI ===============
+document.addEventListener('DOMContentLoaded', function() {
+  initApplication();
+});
+
+function initApplication() {
+  initMap();
+  initEventListeners();
+  handleTileErrors();
+  handleHighZoom();
+  initTileLoadingIndicator();
+  
+  // Tampilkan status awal
+  showEmptyState();
+  
+  // Mulai proses pengambilan data
+  fetchData();
+}
+
+// =============== MANAJEMEN PETA ===============
+function initMap() {
+  try {
+    map = L.map('map', {
+      center: CONFIG.map.center,
+      zoom: CONFIG.map.zoom,
+      minZoom: CONFIG.map.minZoom,
+      maxZoom: CONFIG.map.maxZoom,
+      maxNativeZoom: CONFIG.map.maxNativeZoom,
+      zoomControl: false
+    });
+
+    // Definisikan base layers
+    baseLayers = {
+      'osm': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: CONFIG.map.minZoom,
+        maxZoom: CONFIG.map.maxZoom,
+        maxNativeZoom: CONFIG.map.maxNativeZoom,
+        noWrap: true
+      }),
+      'satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        minZoom: CONFIG.map.minZoom,
+        maxZoom: CONFIG.map.maxZoom,
+        maxNativeZoom: 19,
+        detectRetina: true,
+        noWrap: true
+      })
+    };
+
+    // Tambahkan base layer default
+    baseLayers.osm.addTo(map);
+
+    console.log('Peta berhasil diinisialisasi');
+  } catch (error) {
+    console.error('Gagal menginisialisasi peta:', error);
+    showAlert('Gagal memuat peta. Silakan refresh halaman.', 'error');
+  }
+}
+
+// =============== TOGGLE POLYGON ===============
+function togglePolygon() {
+  showPolygon = !showPolygon;
+  
+  if (polygonLayer) {
+    if (showPolygon) {
+      polygonLayer.addTo(map);
+      document.querySelector('#toggle-polygon-btn i').className = 'fas fa-vector-square';
+    } else {
+      map.removeLayer(polygonLayer);
+      document.querySelector('#toggle-polygon-btn i').className = 'fas fa-square';
+    }
+  }
+}
+
+// =============== TOGGLE BASEMAP ===============
+function toggleBasemap() {
+  // Hapus layer basemap yang aktif
+  if (currentBasemap === 'osm') {
+    map.removeLayer(baseLayers.osm);
+  } else {
+    map.removeLayer(baseLayers.satellite);
   }
   
-  #main-content {
-    flex-direction: column;
-    height: calc(100vh - 70px);
+  // Tentukan layer baru
+  let newBasemap;
+  if (currentBasemap === 'osm') {
+    newBasemap = baseLayers.satellite;
+    currentBasemap = 'satellite';
+    document.querySelector('#toggle-basemap-btn i').className = 'fas fa-map';
+    
+    // Set maxZoom untuk layer satelit
+    map.setMaxZoom(19);
+  } else {
+    newBasemap = baseLayers.osm;
+    currentBasemap = 'osm';
+    document.querySelector('#toggle-basemap-btn i').className = 'fas fa-layer-group';
+    
+    // Kembalikan maxZoom ke nilai awal
+    map.setMaxZoom(CONFIG.map.maxZoom);
   }
   
-  #sidebar {
-    width: 100%;
-    height: 45%;
-    order: 2;
-    padding: 12px;
-    min-width: unset;
-    border-right: none;
-    border-top: 1px solid #c8e6c9;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  // Tambahkan layer baru
+  newBasemap.addTo(map);
   
-  #map-container {
-    width: 100%;
-    height: 55%;
-    order: 1;
-  }
+  // Hapus pesan error jika ada
+  hideTileError();
   
-  #map {
-    height: 100%;
-  }
-  
-  /* PERBAIKAN UTAMA: Struktur sidebar */
-  .sidebar-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 12px;
-    overflow: hidden;
-  }
-  
-  /* Fixed section (atas) */
-  .sidebar-fixed {
-    flex-shrink: 0;
-  }
-  
-  /* Scrollable section (tengah) */
-  .sidebar-scrollable {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-  }
-  
-  /* Action buttons (bawah) */
-  .action-buttons {
-    flex-shrink: 0;
-    margin-top: auto;
-  }
-  
-  /* Perbaikan tab group */
-  .tab-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  
-  .tab-content {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-  }
-  
-  /* Rekomendasi */
-  .recommendation-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .land-info, .summary-grid, .detail-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .chart-container {
-    height: 120px;
-    min-height: 120px;
-  }
-  
-  #app-header h1 {
-    font-size: 1.1rem;
-    white-space: normal;
-    padding: 0 5px;
-    line-height: 1.3;
-  }
-  
-  .header-icons {
-    display: none;
-  }
-  
-  .action-buttons {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  #map-controls {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    bottom: 10px;
-    right: 10px;
-  }
-  
-  .map-control-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.8rem;
+  // Jika zoom saat ini melebihi maxZoom layer baru, set zoom ke maxZoom layer
+  if (map.getZoom() > map.getMaxZoom()) {
+    map.setZoom(map.getMaxZoom());
   }
 }
 
-/* Perangkat mobile kecil (contoh: iPhone 5/SE) */
-@media (max-width: 480px) {
-  #app-header {
-    height: auto;
-    padding: 8px 5px;
+// ==================== TOGGLE TAMPILAN TITIK ====================
+let showMarkers = true;
+
+function toggleMarkers() {
+  showMarkers = !showMarkers;
+
+  markers.forEach(marker => {
+    if (showMarkers) {
+      marker.addTo(map);
+    } else {
+      map.removeLayer(marker);
+    }
+  });
+
+  const icon = document.querySelector('#toggle-marker-btn i');
+  if (icon) {
+    icon.className = showMarkers ? 'fas fa-map-marker-alt' : 'fas fa-map-marker';
   }
+}
+// =============== MANAJEMEN DATA ===============
+async function fetchData() {
+  showLoading(true);
   
-  #app-header h1 {
-    font-size: 0.9rem;
-  }
-  
-  #sidebar {
-    height: 45%;
-    padding: 8px;
-  }
-  
-  #map-container {
-    height: 55%;
-  }
-  
-  .tab-btn {
-    font-size: 0.85rem;
-    padding: 8px 5px;
-  }
-  
-  .btn {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-  }
-  
-  .form-control {
-    padding: 0.5rem;
-  }
-  
-  .chart-container {
-    height: 100px;
-    min-height: 100px;
-  }
-  
-  .recommendation-value {
-    font-size: 1.1rem;
-  }
-  
-  .recommendation-rate {
-    font-size: 0.85rem;
+  try {
+    const response = await fetch(CONFIG.thingspeak.url);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Debugging: Tampilkan data yang diterima
+    console.log('Data from ThingSpeak:', data);
+    
+    if (!data.feeds || !Array.isArray(data.feeds)) {
+      throw new Error('Format data tidak valid: feeds tidak ditemukan');
+    }
+    
+    allPoints = processThingSpeakData(data.feeds);
+    
+    // Debugging: Tampilkan titik yang diproses
+    console.log('Processed points:', allPoints);
+    
+    if (allPoints.length === 0) {
+      throw new Error('Tidak ada titik dengan koordinat valid');
+    }
+    
+    // PERBAIKAN 1: Muat sawah yang sedang aktif, bukan selalu sawah 1
+    const currentField = document.getElementById('sawah-select').value;
+    loadFieldData(parseInt(currentField));
+    
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    showAlert(`Gagal memuat data: ${error.message}`, 'error');
+    
+    // Gunakan data mock
+    allPoints = generateMockData();
+    
+    // PERBAIKAN 2: Tetap muat sawah yang sedang aktif
+    const currentField = document.getElementById('sawah-select').value;
+    loadFieldData(parseInt(currentField));
+    
+    if (allPoints.length === 0) {
+      showAlert('Tidak ada data sawah yang tersedia', 'error');
+    }
+  } finally {
+    showLoading(false);
   }
 }
 
-/* Perangkat mobile - orientasi landscape */
-@media (max-width: 768px) and (orientation: landscape) {
-  #sidebar {
-    height: 60%;
+// =============== PROSES DATA THINGSPEAK ===============
+function processThingSpeakData(feeds) {
+  return feeds
+    .map((feed, index) => {
+      try {
+        const lat = parseFloat(feed.field1);
+        const lng = parseFloat(feed.field2);
+        
+        if (isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) {
+          console.warn(`Koordinat tidak valid untuk titik ${index + 1}:`, feed);
+          return null;
+        }
+        
+        // PERBAIKAN 6: Simpan informasi sawah jika ada di Thingspeak
+        return {
+          id: index + 1,
+          lat: lat,
+          lng: lng,
+          npk: {
+            nitrogen: safeParseFloat(feed.field4),
+            phosphate: safeParseFloat(feed.field5),
+            kalium: safeParseFloat(feed.field6)
+          },
+          sawah: feed.field7 || "", // PERBAIKAN: Gunakan field7 untuk nama sawah
+          coords: [lat, lng]
+        };
+      } catch (e) {
+        console.error('Error processing feed:', feed, e);
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+function safeParseFloat(value) {
+  const num = parseFloat(value);
+  return isNaN(num) ? 0 : num;
+}
+
+// =============== DATA MOCK YANG LEBIH BAIK ===============
+function generateMockData() {
+  const mockData = [];
+  const baseLat = CONFIG.map.center[0];
+  const baseLng = CONFIG.map.center[1];
+  
+  // Daftar nama sawah
+  const fieldNames = [
+    "Sawah PAK LUQMAN",
+    "Sawah PAK MALIK",
+    "Sawah Pak Ujang",
+    "Sawah Timur",
+    "Sawah Barat",
+    "Sawah Utara"
+  ];
+  
+  for (let field = 1; field <= CONFIG.fields.count; field++) {
+    const fieldOffsetLat = (field - 1) * 0.01;
+    
+    for (let i = 0; i < CONFIG.fields.pointsPerField; i++) {
+      const angle = (i / CONFIG.fields.pointsPerField) * Math.PI * 2;
+      const radius = 0.001;
+      
+      mockData.push({
+        id: mockData.length + 1,
+        lat: baseLat + fieldOffsetLat + Math.cos(angle) * radius,
+        lng: baseLng + Math.sin(angle) * radius,
+        npk: {
+          nitrogen: (5 + Math.random() * 5).toFixed(2),
+          phosphate: (20 + Math.random() * 30).toFixed(2),
+          kalium: (10 + Math.random() * 20).toFixed(2)
+        },
+        sawah: fieldNames[field-1], // PERBAIKAN: Tambahkan nama sawah
+        coords: [
+          baseLat + fieldOffsetLat + Math.cos(angle) * radius,
+          baseLng + Math.sin(angle) * radius
+        ]
+      });
+    }
   }
   
-  #map-container {
-    height: 40%;
+  return mockData;
+}
+
+// =============== PERBAIKAN BUG PEMILIHAN SAWAH ===============
+function loadFieldData(fieldNumber) {
+  currentField = fieldNumber;
+  clearMap();
+  
+  // PERBAIKAN 3: Gunakan cara yang lebih fleksibel untuk memilih data sawah
+  const fieldPoints = getFieldPoints(fieldNumber);
+  
+  console.log(`Loading field ${fieldNumber}: ${fieldPoints.length} points`);
+  
+  if (fieldPoints.length === 0) {
+    showEmptyState();
+    return;
+  }
+  
+  plotPoints(fieldPoints);
+  
+  if (fieldPoints.length >= 3) {
+    calculateFieldArea(fieldPoints);
+  }
+  
+  updateFieldInfo(fieldPoints);
+  updateRecommendation(fieldPoints);
+  
+  // Sembunyikan detail titik
+  document.getElementById('point-details').style.display = 'none';
+  selectedPoint = null;
+}
+
+// =============== FUNGSI BARU: Ambil data berdasarkan sawah ===============
+function getFieldPoints(fieldNumber) {
+  const sawahName = document.getElementById('sawah-select').options[fieldNumber-1].text;
+  
+  // Coba filter berdasarkan nama sawah
+  let fieldPoints = allPoints.filter(point => point.sawah === sawahName);
+  
+  // Jika tidak ditemukan, gunakan metode indeks
+  if (fieldPoints.length === 0 && fieldNumber <= CONFIG.fields.count) {
+    const startIdx = (fieldNumber - 1) * CONFIG.fields.pointsPerField;
+    const endIdx = startIdx + CONFIG.fields.pointsPerField;
+    fieldPoints = allPoints.slice(startIdx, Math.min(endIdx, allPoints.length));
+  }
+  
+  console.log(`Mengambil sawah ${sawahName} (${fieldNumber}): ${fieldPoints.length} titik`);
+  return fieldPoints;
+}
+
+// =============== MANAJEMEN TITIK ===============
+function plotPoints(points) {
+  // Hapus marker lama jika ada
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
+  
+  points.forEach(point => {
+    try {
+      const icon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="circle-marker">${point.id}</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+      
+      const marker = L.marker(point.coords, { icon })
+        .addTo(map)
+        .bindPopup(createPointPopup(point));
+      
+      marker.on('click', () => selectPoint(point));
+      
+      markers.push(marker);
+    } catch (e) {
+      console.error('Error creating marker:', point, e);
+    }
+  });
+  
+  if (markers.length > 0) {
+    try {
+      const bounds = L.latLngBounds(markers.map(m => m.getLatLng()));
+      map.fitBounds(bounds, { padding: [50, 50] });
+    } catch (e) {
+      console.error('Error fitting bounds:', e);
+      map.setView(CONFIG.map.center, CONFIG.map.zoom);
+    }
+  } else {
+    showAlert('Tidak ada titik yang dapat ditampilkan', 'warning');
+    map.setView(CONFIG.map.center, CONFIG.map.zoom);
   }
 }
 
-/* Perbaikan untuk tablet kecil */
-@media (min-width: 481px) and (max-width: 768px) {
-  #sidebar {
-    height: 40%;
+function createPointPopup(point) {
+  return `
+    <div class="point-popup">
+      <strong>Titik ${point.id}</strong>
+      <div>Lat: ${point.lat.toFixed(6)}</div>
+      <div>Lng: ${point.lng.toFixed(6)}</div>
+      <div>N: ${point.npk.nitrogen} ton</div>
+      <div>P: ${point.npk.phosphate} mg/kg</div>
+      <div>K: ${point.npk.kalium} mg/kg</div>
+    </div>
+  `;
+}
+
+function calculateFieldArea(points) {
+  if (polygonLayer) {
+    map.removeLayer(polygonLayer);
   }
   
-  #map-container {
-    height: 60%;
+  const coords = points.map(p => [p.lng, p.lat]);
+  coords.push(coords[0]);
+  
+  polygonLayer = L.polygon(points.map(p => p.coords), {
+    color: '#0000FF',
+    weight: 2,
+    fillOpacity: 0.5,
+    fillColor: "#00008B"
+  });
+  
+  // Tambahkan ke peta jika polygon ditampilkan
+  if (showPolygon) {
+    polygonLayer.addTo(map);
+  }
+  
+  const polygon = turf.polygon([coords]);
+  const area = turf.area(polygon) / 10000;
+  const perimeter = turf.length(turf.lineString(coords)) * 1000;
+  
+  document.getElementById('land-area').textContent = area.toFixed(2) + ' Ha';
+  document.getElementById('land-perimeter').textContent = perimeter.toFixed(2) + ' m';
+  
+  addDistanceLabels(points);
+}
+
+function addDistanceLabels(points) {
+  document.querySelectorAll('.distance-label').forEach(el => el.remove());
+  
+  for (let i = 0; i < points.length; i++) {
+    const nextIdx = (i + 1) % points.length;
+    const from = points[i];
+    const to = points[nextIdx];
+    
+    const line = turf.lineString([[from.lng, from.lat], [to.lng, to.lat]]);
+    const distance = turf.length(line) * 1000;
+    const midpoint = [
+      (from.lat + to.lat) / 2,
+      (from.lng + to.lng) / 2
+    ];
+    
+    const label = L.tooltip({
+      permanent: true,
+      direction: 'center',
+      className: 'distance-label'
+    })
+      .setContent(`${distance.toFixed(1)} m`)
+      .setLatLng(midpoint);
+    
+    // Sembunyikan jika toggle mati
+    if (!showDistanceLabels) {
+      label.getElement().style.display = 'none';
+    }
+    
+    label.addTo(map);
   }
 }
 
-/* Perbaikan umum untuk semua perangkat mobile */
-@media (max-width: 768px) {
-  .sidebar-content {
-    gap: 12px;
+// =============== TAMPILAN & UI ===============
+function showEmptyState() {
+  document.getElementById('rekomendasi-pupuk').innerHTML = `
+    <div class="empty-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>Tidak ada data untuk sawah ini</p>
+      <button id="reload-data-btn" class="btn btn-primary">
+        <i class="fas fa-sync"></i> Muat Ulang Data
+      </button>
+    </div>
+  `;
+  // Perbarui informasi lainnya
+  document.getElementById('land-area').textContent = '0 Ha';
+  document.getElementById('land-perimeter').textContent = '0 m';
+  
+  // Detail tab
+  document.getElementById('avg-nitrogen').textContent = '0';
+  document.getElementById('avg-phosphate').textContent = '0';
+  document.getElementById('avg-kalium').textContent = '0';
+  
+  if (fertilizerChart) {
+    fertilizerChart.destroy();
+    fertilizerChart = null;
+  }
+}
+
+function updateFieldInfo(points) {
+  // Gunakan manualNitrogen untuk sawah ini jika ada
+  const avgN = manualNitrogen[currentField] || calculateAverage(points, 'nitrogen');
+  const avgP = calculateAverage(points, 'phosphate');
+  const avgK = calculateAverage(points, 'kalium');
+  
+  document.getElementById('avg-nitrogen').textContent = avgN.toFixed(2);
+  document.getElementById('avg-phosphate').textContent = avgP.toFixed(2);
+  document.getElementById('avg-kalium').textContent = avgK.toFixed(2);
+}
+
+function calculateAverage(points, property) {
+  const sum = points.reduce((total, point) => total + parseFloat(point.npk[property]), 0);
+  return points.length > 0 ? sum / points.length : 0;
+}
+
+function updateRecommendation(points) {
+  let avgN = manualNitrogen[currentField] || calculateAverage(points, 'nitrogen');
+  let avgP = calculateAverage(points, 'phosphate');
+  let avgK = calculateAverage(points, 'kalium');
+
+  // Validasi rentang nilai
+  avgN = Math.max(0, Math.min(10, avgN || 0));
+  avgP = Math.max(0, Math.min(50, avgP || 0));
+  avgK = Math.max(0, Math.min(30, avgK || 0));
+
+  const area = parseFloat(document.getElementById('land-area').textContent) || 0;
+  const recommendation = calculateFertilizerRecommendation(avgN, avgP, avgK, area);
+  
+  displayRecommendation(recommendation, area);
+}
+
+function displayRecommendation(recommendation, area) {
+  const container = document.getElementById('rekomendasi-pupuk');
+  
+  container.innerHTML = `
+    <div class="recommendation-summary">
+      <h3><i class="fas fa-chart-pie"></i> Rekomendasi Pemupukan</h3>
+      <div class="recommendation-grid">
+        <div class="recommendation-item urea">
+          <i class="fas fa-seedling"></i>
+          <div class="recommendation-value">${recommendation.urea.total} kg</div>
+          <div class="recommendation-label">UREA</div>
+          <div class="recommendation-rate">${recommendation.urea.rate} kg/ha</div>
+        </div>
+        <div class="recommendation-item sp36">
+          <i class="fas fa-flask"></i>
+          <div class="recommendation-value">${recommendation.sp36.total} kg</div>
+          <div class="recommendation-label">SP-36</div>
+          <div class="recommendation-rate">${recommendation.sp36.rate} kg/ha</div>
+        </div>
+        <div class="recommendation-item kcl">
+          <i class="fas fa-atom"></i>
+          <div class="recommendation-value">${recommendation.kcl.total} kg</div>
+          <div class="recommendation-label">KCL</div>
+          <div class="recommendation-rate">${recommendation.kcl.rate} kg/ha</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  updateChart(
+    parseFloat(recommendation.urea.total),
+    parseFloat(recommendation.sp36.total),
+    parseFloat(recommendation.kcl.total),
+    recommendation
+  );
+}
+
+function updateChart(urea, sp36, kcl, recommendation) {
+  const ctx = document.getElementById('fertilizer-chart').getContext('2d');
+  
+  if (fertilizerChart) {
+    fertilizerChart.destroy();
   }
   
-  .form-group {
-    margin-bottom: 12px;
+  fertilizerChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['UREA', 'SP-36', 'KCL'],
+      datasets: [{
+        data: [urea, sp36, kcl],
+        backgroundColor: [
+          '#4CAF50',
+          '#2196F3',
+          '#FF9800'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              const rate = recommendation[label.toLowerCase()].rate;
+              return `${label}: ${value.toFixed(1)} kg (${rate} kg/ha)`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Jumlah Pupuk (kg)'
+          }
+        }
+      }
+    }
+  });
+}
+
+function selectPoint(point) {
+  selectedPoint = point;  
+  const pointDetails = document.getElementById('point-details');
+  pointDetails.style.display = 'block';
+  
+  pointDetails.querySelector('.detail-grid').innerHTML = `
+    <div><span>ID:</span> ${point.id}</div>
+    <div><span>Latitude:</span> ${point.lat.toFixed(6)}</div>
+    <div><span>Longitude:</span> ${point.lng.toFixed(6)}</div>
+    <div><span>Nitrogen:</span> ${point.npk.nitrogen} ton</div>
+    <div><span>Phosphate:</span> ${point.npk.phosphate} mg/kg</div>
+    <div><span>Kalium:</span> ${point.npk.kalium} mg/kg</div>
+  `;
+}
+
+function clearMap() {
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
+  
+  if (polygonLayer) {
+    map.removeLayer(polygonLayer);
+    polygonLayer = null;
   }
   
-  .point-detail {
-    max-height: 25vh;
-    overflow-y: auto;
+  // Hapus label jarak
+  document.querySelectorAll('.distance-label').forEach(el => el.remove());
+  selectedPoint = null;
+}
+
+function showLoading(show) {
+  document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
+}
+
+function showAlert(message, type = 'info') {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type}`;
+  alertDiv.innerHTML = `
+    <i class="fas fa-${getIconByType(type)}"></i>
+    <span>${message}</span>
+    <button class="close-btn">&times;</button>
+  `;
+  
+  const container = document.getElementById('sidebar');
+  container.insertBefore(alertDiv, container.firstChild);
+  
+  setTimeout(() => {
+    alertDiv.classList.add('fade-out');
+    setTimeout(() => alertDiv.remove(), 300);
+  }, 5000);
+  
+  alertDiv.querySelector('.close-btn').addEventListener('click', () => {
+    alertDiv.remove();
+  });
+}
+
+function getIconByType(type) {
+  const icons = {
+    'success': 'check-circle',
+    'error': 'exclamation-circle',
+    'warning': 'exclamation-triangle',
+    'info': 'info-circle'
+  };
+  return icons[type] || 'info-circle';
+}
+
+// =============== PENANGANAN ERROR TILE ===============
+function handleTileErrors() {
+  // Deteksi tile errors
+  map.on('tileerror', function(e) {
+    // Hanya tampilkan pesan jika belum ditampilkan
+    if (!tileErrorDisplayed) {
+      showTileError('Data peta tidak tersedia pada level zoom ini. Silakan zoom out.');
+      tileErrorDisplayed = true;
+    }
+  });
+  
+  // Hapus pesan error saat zoom berubah
+  map.on('zoomend', function() {
+    // Reset status error saat zoom berubah
+    tileErrorDisplayed = false;
+    hideTileError();
+    
+    // Jika menggunakan layer satelit dan zoom > 19, fallback ke OSM
+    if (currentBasemap === 'satellite' && map.getZoom() > 19) {
+      // Hanya jika bukan sedang proses toggle
+      if (!document.querySelector('#toggle-basemap-btn').classList.contains('processing')) {
+        document.querySelector('#toggle-basemap-btn').classList.add('processing');
+        setTimeout(() => {
+          toggleBasemap();
+          document.querySelector('#toggle-basemap-btn').classList.remove('processing');
+        }, 500);
+      }
+    }
+  });
+}
+
+function showTileError(message) {
+  const container = map.getContainer();
+  
+  // Hapus pesan error sebelumnya
+  hideTileError();
+  
+  // Tampilkan pesan error
+  const errorMsg = document.createElement('div');
+  errorMsg.className = 'tile-error-message';
+  errorMsg.innerHTML = `
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>${message}</p>
+  `;
+  
+  container.appendChild(errorMsg);
+}
+
+function hideTileError() {
+  const container = map.getContainer();
+  const existingError = container.querySelector('.tile-error-message');
+  if (existingError) {
+    existingError.remove();
+  }
+}
+
+// =============== PENANGANAN ZOOM TINGGI ===============
+function handleHighZoom() {
+  map.on('zoomend', function() {
+    // Jika menggunakan layer satelit dan zoom > 19
+    if (currentBasemap === 'satellite' && map.getZoom() > 19) {
+      // Gunakan metode overscaling
+      baseLayers.satellite.setOptions({
+        maxNativeZoom: map.getZoom() // Izinkan zoom lebih tinggi
+      });
+      
+      // Refresh tiles
+      baseLayers.satellite.redraw();
+    }
+  });
+}
+
+// =============== TILE LOADING INDICATOR ===============
+function initTileLoadingIndicator() {
+  const indicator = document.createElement('div');
+  indicator.className = 'tile-loading-indicator';
+  indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat peta...';
+  map.getContainer().appendChild(indicator);
+  
+  map.on('load', function() {
+    indicator.style.display = 'none';
+  });
+  
+  map.on('loading', function() {
+    indicator.style.display = 'block';
+  });
+}
+
+// =============== EVENT LISTENERS ===============
+function initEventListeners() {
+  // Pilih sawah
+  document.getElementById('sawah-select').addEventListener('change', function() {
+    loadFieldData(parseInt(this.value));
+  });
+  
+  // Simpan nitrogen
+  document.getElementById('save-n-btn').addEventListener('click', saveNitrogenValue);
+  
+  // Tombol peta
+  document.getElementById('toggle-distance-btn').addEventListener('click', toggleDistanceLabels);
+  document.getElementById('toggle-polygon-btn').addEventListener('click', togglePolygon);
+  document.getElementById('toggle-basemap-btn').addEventListener('click', toggleBasemap);
+  document.getElementById('zoom-in-btn').addEventListener('click', () => map.zoomIn());
+  document.getElementById('zoom-out-btn').addEventListener('click', () => map.zoomOut());
+  document.getElementById('toggle-marker-btn').addEventListener('click', toggleMarkers);
+
+  
+  // Tombol aksi
+  document.getElementById('print-btn').addEventListener('click', printReport);
+  
+  // Tab navigation
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tabId = this.getAttribute('data-tab');
+      switchTab(tabId);
+    });
+  });
+  
+  // Tombol reload data
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'reload-data-btn') {
+      // PERBAIKAN 7: Simpan sawah yang sedang dipilih sebelum reload
+      const currentField = document.getElementById('sawah-select').value;
+      fetchData();
+      
+      // Setelah reload, kembalikan ke sawah yang dipilih
+      setTimeout(() => {
+        document.getElementById('sawah-select').value = currentField;
+        loadFieldData(parseInt(currentField));
+      }, 1000);
+    }
+  });
+}
+
+// ================= Fungsi toggle jarak ======================
+function toggleDistanceLabels() {
+  showDistanceLabels = !showDistanceLabels;
+  const labels = document.querySelectorAll('.distance-label');
+  labels.forEach(label => {
+    if (showDistanceLabels) {
+      label.style.display = 'block';
+    } else {
+      label.style.display = 'none';
+    }
+  });
+  
+  // Update icon
+  const icon = document.querySelector('#toggle-distance-btn i');
+  icon.className = showDistanceLabels ? 'fas fa-ruler' : 'fas fa-ruler-combined';
+}
+
+function saveNitrogenValue() {
+  const input = document.getElementById('input-n');
+  const value = parseFloat(input.value);
+  
+  if (isNaN(value) || value <= 0) {
+    showAlert('Masukkan nilai hasil panen yang valid (angka positif)', 'error');
+    input.focus();
+    return;
   }
   
-  .empty-state p {
-    font-size: 1rem;
+  // Simpan nilai nitrogen khusus untuk sawah saat ini
+  manualNitrogen[currentField] = value;
+  
+  showAlert(`Nilai nitrogen ${value} ton berhasil disimpan untuk sawah ini`, 'success');
+  input.value = '';
+  
+  const fieldPoints = getFieldPoints(currentField);
+  
+  if (fieldPoints.length > 0) {
+    updateRecommendation(fieldPoints);
+    updateFieldInfo(fieldPoints);
   }
+}
+
+function printReport() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // Header
+  const sawahName = document.getElementById('sawah-select').options[document.getElementById('sawah-select').selectedIndex].text;
+  doc.setFontSize(16);
+  doc.text(`Laporan Pemupukan Sawah: ${sawahName}`, 15, 15);
+  
+  // Data rekomendasi
+  const urea = document.querySelector('.recommendation-item.urea .recommendation-value').textContent;
+  const sp36 = document.querySelector('.recommendation-item.sp36 .recommendation-value').textContent;
+  const kcl = document.querySelector('.recommendation-item.kcl .recommendation-value').textContent;
+  
+  // Data rata-rata kandungan
+  const avgNitrogen = document.getElementById('avg-nitrogen').textContent;
+  const avgPhosphate = document.getElementById('avg-phosphate').textContent;
+  const avgKalium = document.getElementById('avg-kalium').textContent;
+  
+  // Luas lahan
+  const luasLahan = document.getElementById('land-area').textContent;
+  
+  // Tabel rekomendasi
+  const tableData = [
+    ['Jenis Pupuk', 'Jumlah (kg)', 'Dosis (kg/ha)'],
+    ['UREA', urea, document.querySelector('.recommendation-item.urea .recommendation-rate').textContent.replace('kg/ha', '').trim()],
+    ['SP-36', sp36, document.querySelector('.recommendation-item.sp36 .recommendation-rate').textContent.replace('kg/ha', '').trim()],
+    ['KCL', kcl, document.querySelector('.recommendation-item.kcl .recommendation-rate').textContent.replace('kg/ha', '').trim()]
+  ];
+  
+  doc.autoTable({
+    startY: 25,
+    head: tableData.slice(0, 1),
+    body: tableData.slice(1),
+    theme: 'grid',
+    headStyles: { fillColor: [46, 125, 50] }
+  });
+  
+  // Tabel rata-rata kandungan
+  const avgData = [
+    ['Parameter', 'Nilai'],
+    ['Luas Lahan', `${luasLahan} Ha`],
+    ['Rata-rata Nitrogen', `${avgNitrogen} ton`],
+    ['Rata-rata Phosphate', `${avgPhosphate} mg/kg`],
+    ['Rata-rata Kalium', `${avgKalium} mg/kg`]
+  ];
+  
+  doc.autoTable({
+    startY: doc.lastAutoTable.finalY + 10,
+    body: avgData,
+    theme: 'grid',
+    headStyles: { fillColor: [2, 136, 209] }
+  });
+  
+  // Tabel data titik
+  const pointData = [['ID', 'Latitude', 'Longitude', 'N (ton)', 'P (mg/kg)', 'K (mg/kg)']];
+  const startIdx = (currentField - 1) * CONFIG.fields.pointsPerField;
+  const endIdx = startIdx + CONFIG.fields.pointsPerField;
+  const fieldPoints = allPoints.slice(startIdx, endIdx);
+  
+  fieldPoints.forEach(point => {
+    pointData.push([
+      point.id,
+      point.lat.toFixed(6),
+      point.lng.toFixed(6),
+      point.npk.nitrogen,
+      point.npk.phosphate,
+      point.npk.kalium
+    ]);
+  });
+  
+  doc.autoTable({
+    startY: doc.lastAutoTable.finalY + 10,
+    head: pointData.slice(0, 1),
+    body: pointData.slice(1),
+    theme: 'grid',
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [255, 160, 0] }
+  });
+  
+  // Footer
+  const date = new Date().toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+  
+  doc.setFontSize(10);
+  doc.text(`Dicetak pada: ${date}`, 14, doc.internal.pageSize.height - 10);
+  
+  // Simpan PDF
+  doc.save(`laporan_pemupukan_${sawahName.replace(/\s+/g, '_')}.pdf`);
+}
+
+function resetMapView() {
+  map.setView(CONFIG.map.center, CONFIG.map.zoom);
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  document.getElementById(`${tabId}-tab`).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+}
+
+function calculateFertilizerRecommendation(avgN, avgP, avgK, area) {
+  // Panggil fungsi fuzzySugeno dari file terpisah
+  const fuzzy = fuzzySugeno(avgN, avgP, avgK);
+  
+  return {
+    urea: { 
+      rate: fuzzy.urea.toFixed(1), 
+      total: (fuzzy.urea * area).toFixed(1) 
+    },
+    sp36: { 
+      rate: fuzzy.sp36.toFixed(1), 
+      total: (fuzzy.sp36 * area).toFixed(1) 
+    },
+    kcl: { 
+      rate: fuzzy.kcl.toFixed(1), 
+      total: (fuzzy.kcl * area).toFixed(1) 
+    }
+  };
 }
