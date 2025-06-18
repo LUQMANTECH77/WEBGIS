@@ -13,7 +13,7 @@ const CONFIG = {
     url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=E22JKJFSAT9OSD7K&results=180`
   },
   fields: {
-    count: 6,
+    count: 8,
     pointsPerField: 30
   }
 };
@@ -263,14 +263,15 @@ function generateMockData() {
   const baseLat = CONFIG.map.center[0];
   const baseLng = CONFIG.map.center[1];
   
-  // Daftar nama sawah
   const fieldNames = [
-    "Sawah PAK LUQMAN",
-    "Sawah PAK MALIK",
-    "Sawah Pak Ujang",
-    "Sawah Timur",
-    "Sawah Barat",
-    "Sawah Utara"
+    "Sawah Padi 1",
+    "Sawah Padi 2",
+    "Sawah Padi 3",
+    "Sawah Jagung 1",
+    "Sawah Jagung 2",
+    "Sawah Jagung 3",
+    "Sawah Ujicoba 1",
+    "Sawah Ujicoba 2"
   ];
   
   for (let field = 1; field <= CONFIG.fields.count; field++) {
@@ -281,7 +282,7 @@ function generateMockData() {
       const radius = 0.001;
       
       mockData.push({
-        id: mockData.length + 1,
+        id: i + 1,
         lat: baseLat + fieldOffsetLat + Math.cos(angle) * radius,
         lng: baseLng + Math.sin(angle) * radius,
         npk: {
@@ -289,7 +290,7 @@ function generateMockData() {
           phosphate: (20 + Math.random() * 30).toFixed(2),
           kalium: (10 + Math.random() * 20).toFixed(2)
         },
-        sawah: fieldNames[field-1], // PERBAIKAN: Tambahkan nama sawah
+        sawah: fieldNames[field-1] || `Sawah ${field}`,
         coords: [
           baseLat + fieldOffsetLat + Math.cos(angle) * radius,
           baseLng + Math.sin(angle) * radius
@@ -306,13 +307,14 @@ function loadFieldData(fieldNumber) {
   currentField = fieldNumber;
   clearMap();
   
-  // PERBAIKAN 3: Gunakan cara yang lebih fleksibel untuk memilih data sawah
   const fieldPoints = getFieldPoints(fieldNumber);
   
   console.log(`Loading field ${fieldNumber}: ${fieldPoints.length} points`);
   
   if (fieldPoints.length === 0) {
     showEmptyState();
+    document.getElementById('land-area').textContent = '0 Ha';
+    document.getElementById('land-perimeter').textContent = '0 m';
     return;
   }
   
@@ -320,12 +322,15 @@ function loadFieldData(fieldNumber) {
   
   if (fieldPoints.length >= 3) {
     calculateFieldArea(fieldPoints);
+  } else {
+    document.getElementById('land-area').textContent = '0 Ha';
+    document.getElementById('land-perimeter').textContent = '0 m';
+    showAlert('Peringatan: Minimal 3 titik diperlukan untuk menghitung luas lahan', 'warning');
   }
   
   updateFieldInfo(fieldPoints);
   updateRecommendation(fieldPoints);
   
-  // Sembunyikan detail titik
   document.getElementById('point-details').style.display = 'none';
   selectedPoint = null;
 }
@@ -334,10 +339,8 @@ function loadFieldData(fieldNumber) {
 function getFieldPoints(fieldNumber) {
   const sawahName = document.getElementById('sawah-select').options[fieldNumber-1].text;
   
-  // Coba filter berdasarkan nama sawah
   let fieldPoints = allPoints.filter(point => point.sawah === sawahName);
   
-  // Jika tidak ditemukan, gunakan metode indeks
   if (fieldPoints.length === 0 && fieldNumber <= CONFIG.fields.count) {
     const startIdx = (fieldNumber - 1) * CONFIG.fields.pointsPerField;
     const endIdx = startIdx + CONFIG.fields.pointsPerField;
@@ -350,24 +353,25 @@ function getFieldPoints(fieldNumber) {
 
 // =============== MANAJEMEN TITIK ===============
 function plotPoints(points) {
-  // Hapus marker lama jika ada
   markers.forEach(marker => map.removeLayer(marker));
   markers = [];
   
-  points.forEach(point => {
+  points.forEach((point, index) => {
     try {
+      const displayNumber = index + 1;
+      
       const icon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="circle-marker">${point.id}</div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
+        html: `<div class="circle-marker">${displayNumber}</div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
       });
       
       const marker = L.marker(point.coords, { icon })
         .addTo(map)
-        .bindPopup(createPointPopup(point));
+        .bindPopup(createPointPopup(point, displayNumber));
       
-      marker.on('click', () => selectPoint(point));
+      marker.on('click', () => selectPoint(point, displayNumber));
       
       markers.push(marker);
     } catch (e) {
@@ -389,6 +393,38 @@ function plotPoints(points) {
   }
 }
 
+// PERBAIKAN: Tambahkan displayNumber ke popup
+function createPointPopup(point, displayNumber) {
+  return `
+    <div class="point-popup">
+      <strong>Titik ${displayNumber}</strong>
+      <div>Lat: ${point.lat.toFixed(6)}</div>
+      <div>Lng: ${point.lng.toFixed(6)}</div>
+      <div>N: ${point.npk.nitrogen} ton</div>
+      <div>P: ${point.npk.phosphate} mg/kg</div>
+      <div>K: ${point.npk.kalium} mg/kg</div>
+      <div>Sawah: ${point.sawah || 'Tidak diketahui'}</div>
+    </div>
+  `;
+}
+
+// PERBAIKAN: Tambahkan displayNumber ke fungsi selectPoint
+function selectPoint(point, displayNumber) {
+  selectedPoint = point;  
+  const pointDetails = document.getElementById('point-details');
+  pointDetails.style.display = 'block';
+  
+  pointDetails.querySelector('.detail-grid').innerHTML = `
+    <div><span>ID:</span> ${displayNumber}</div>
+    <div><span>Latitude:</span> ${point.lat.toFixed(6)}</div>
+    <div><span>Longitude:</span> ${point.lng.toFixed(6)}</div>
+    <div><span>Nitrogen:</span> ${point.npk.nitrogen} ton</div>
+    <div><span>Phosphate:</span> ${point.npk.phosphate} mg/kg</div>
+    <div><span>Kalium:</span> ${point.npk.kalium} mg/kg</div>
+    <div><span>Sawah:</span> ${point.sawah || 'Tidak diketahui'}</div>
+  `;
+}
+
 function createPointPopup(point) {
   return `
     <div class="point-popup">
@@ -405,62 +441,81 @@ function createPointPopup(point) {
 function calculateFieldArea(points) {
   if (polygonLayer) {
     map.removeLayer(polygonLayer);
+    polygonLayer = null;
   }
   
-  const coords = points.map(p => [p.lng, p.lat]);
-  coords.push(coords[0]);
+  document.querySelectorAll('.distance-label').forEach(el => el.remove());
   
-  polygonLayer = L.polygon(points.map(p => p.coords), {
-    color: '#0000FF',
-    weight: 2,
-    fillOpacity: 0.5,
-    fillColor: "#00008B"
-  });
-  
-  // Tambahkan ke peta jika polygon ditampilkan
-  if (showPolygon) {
-    polygonLayer.addTo(map);
+  try {
+    const coords = points.map(p => [p.lng, p.lat]);
+    
+    if (coords.length > 0 && coords[0].length === 2) {
+      coords.push(coords[0]); // Tutup poligon
+      
+      polygonLayer = L.polygon(points.map(p => p.coords), {
+        color: '#0000FF',
+        weight: 2,
+        fillOpacity: 0.3,
+        fillColor: "#00008B"
+      });
+      
+      if (showPolygon) {
+        polygonLayer.addTo(map);
+      }
+      
+      const polygon = turf.polygon([coords]);
+      const area = turf.area(polygon) / 10000;
+      const perimeter = turf.length(turf.lineString(coords)) * 1000;
+      
+      document.getElementById('land-area').textContent = area.toFixed(2) + ' Ha';
+      document.getElementById('land-perimeter').textContent = perimeter.toFixed(2) + ' m';
+      
+      addDistanceLabels(points);
+    }
+  } catch (e) {
+    console.error('Error calculating area:', e);
+    showAlert('Gagal menghitung luas lahan. Format titik tidak valid.', 'error');
+    document.getElementById('land-area').textContent = '0 Ha';
+    document.getElementById('land-perimeter').textContent = '0 m';
   }
-  
-  const polygon = turf.polygon([coords]);
-  const area = turf.area(polygon) / 10000;
-  const perimeter = turf.length(turf.lineString(coords)) * 1000;
-  
-  document.getElementById('land-area').textContent = area.toFixed(2) + ' Ha';
-  document.getElementById('land-perimeter').textContent = perimeter.toFixed(2) + ' m';
-  
-  addDistanceLabels(points);
 }
 
 function addDistanceLabels(points) {
-  document.querySelectorAll('.distance-label').forEach(el => el.remove());
-  
-  for (let i = 0; i < points.length; i++) {
-    const nextIdx = (i + 1) % points.length;
-    const from = points[i];
-    const to = points[nextIdx];
-    
-    const line = turf.lineString([[from.lng, from.lat], [to.lng, to.lat]]);
-    const distance = turf.length(line) * 1000;
-    const midpoint = [
-      (from.lat + to.lat) / 2,
-      (from.lng + to.lng) / 2
-    ];
-    
-    const label = L.tooltip({
-      permanent: true,
-      direction: 'center',
-      className: 'distance-label'
-    })
-      .setContent(`${distance.toFixed(1)} m`)
-      .setLatLng(midpoint);
-    
-    // Sembunyikan jika toggle mati
-    if (!showDistanceLabels) {
-      label.getElement().style.display = 'none';
+  try {
+    for (let i = 0; i < points.length; i++) {
+      const nextIdx = (i + 1) % points.length;
+      const from = points[i];
+      const to = points[nextIdx];
+      
+      if (!from || !to || !from.coords || !to.coords) {
+        console.warn('Koordinat tidak valid:', from, to);
+        continue;
+      }
+      
+      const line = turf.lineString([[from.lng, from.lat], [to.lng, to.lat]]);
+      const distance = turf.length(line) * 1000;
+      const midpoint = [
+        (from.lat + to.lat) / 2,
+        (from.lng + to.lng) / 2
+      ];
+      
+      const label = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'distance-label'
+      })
+        .setContent(`${distance.toFixed(1)} m`)
+        .setLatLng(midpoint);
+      
+      if (!showDistanceLabels) {
+        label.getElement().style.display = 'none';
+      }
+      
+      label.addTo(map);
     }
-    
-    label.addTo(map);
+  } catch (e) {
+    console.error('Error adding distance labels:', e);
+    showAlert('Gagal menambahkan label jarak', 'error');
   }
 }
 
@@ -856,25 +911,21 @@ function printReport() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   
-  // Header
   const sawahName = document.getElementById('sawah-select').options[document.getElementById('sawah-select').selectedIndex].text;
   doc.setFontSize(16);
   doc.text(`Laporan Pemupukan Sawah: ${sawahName}`, 15, 15);
   
-  // Data rekomendasi
   const urea = document.querySelector('.recommendation-item.urea .recommendation-value').textContent;
   const sp36 = document.querySelector('.recommendation-item.sp36 .recommendation-value').textContent;
   const kcl = document.querySelector('.recommendation-item.kcl .recommendation-value').textContent;
   
-  // Data rata-rata kandungan
   const avgNitrogen = document.getElementById('avg-nitrogen').textContent;
   const avgPhosphate = document.getElementById('avg-phosphate').textContent;
   const avgKalium = document.getElementById('avg-kalium').textContent;
   
-  // Luas lahan
   const luasLahan = document.getElementById('land-area').textContent;
+  const kelilingLahan = document.getElementById('land-perimeter').textContent;
   
-  // Tabel rekomendasi
   const tableData = [
     ['Jenis Pupuk', 'Jumlah (kg)', 'Dosis (kg/ha)'],
     ['UREA', urea, document.querySelector('.recommendation-item.urea .recommendation-rate').textContent.replace('kg/ha', '').trim()],
@@ -890,10 +941,10 @@ function printReport() {
     headStyles: { fillColor: [46, 125, 50] }
   });
   
-  // Tabel rata-rata kandungan
   const avgData = [
     ['Parameter', 'Nilai'],
-    ['Luas Lahan', `${luasLahan} Ha`],
+    ['Luas Lahan', `${luasLahan}`],
+    ['Keliling Lahan', `${kelilingLahan}`],
     ['Rata-rata Nitrogen', `${avgNitrogen} ton`],
     ['Rata-rata Phosphate', `${avgPhosphate} mg/kg`],
     ['Rata-rata Kalium', `${avgKalium} mg/kg`]
@@ -906,18 +957,14 @@ function printReport() {
     headStyles: { fillColor: [2, 136, 209] }
   });
   
-  // Tabel data titik
-  const pointData = [['ID', 'Latitude', 'Longitude', 'N (ton)', 'P (mg/kg)', 'K (mg/kg)']];
-  const startIdx = (currentField - 1) * CONFIG.fields.pointsPerField;
-  const endIdx = startIdx + CONFIG.fields.pointsPerField;
-  const fieldPoints = allPoints.slice(startIdx, endIdx);
+  const pointData = [['ID', 'Latitude', 'Longitude', 'P (mg/kg)', 'K (mg/kg)']];
+  const fieldPoints = getFieldPoints(currentField);
   
-  fieldPoints.forEach(point => {
+  fieldPoints.forEach((point, index) => {
     pointData.push([
-      point.id,
+      index + 1,
       point.lat.toFixed(6),
       point.lng.toFixed(6),
-      point.npk.nitrogen,
       point.npk.phosphate,
       point.npk.kalium
     ]);
@@ -932,7 +979,6 @@ function printReport() {
     headStyles: { fillColor: [255, 160, 0] }
   });
   
-  // Footer
   const date = new Date().toLocaleDateString('id-ID', {
     day: '2-digit',
     month: 'long',
@@ -942,7 +988,6 @@ function printReport() {
   doc.setFontSize(10);
   doc.text(`Dicetak pada: ${date}`, 14, doc.internal.pageSize.height - 10);
   
-  // Simpan PDF
   doc.save(`laporan_pemupukan_${sawahName.replace(/\s+/g, '_')}.pdf`);
 }
 
