@@ -51,12 +51,15 @@ html, body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body, input, select, button {
   word-wrap: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button, .btn {
@@ -64,6 +67,7 @@ button, .btn {
   font-size: 1rem;
   width: 100%;
   padding: 0.75rem;
+  touch-action: manipulation;
 }
 
 /* =============== LAYOUT =============== */
@@ -805,17 +809,7 @@ button, .btn {
     overflow: hidden;
   }
   
-  #map-container {
-    width: 100%;
-    height: 55%;
-    order: 1;
-  }
-  
-  #map {
-    height: 100%;
-  }
-  
-  /* PERBAIKAN UTAMA: Struktur sidebar */
+  /* Struktur sidebar untuk mobile */
   .sidebar-content {
     display: flex;
     flex-direction: column;
@@ -824,22 +818,30 @@ button, .btn {
     overflow: hidden;
   }
   
-  /* Fixed section (atas) */
   .sidebar-fixed {
     flex-shrink: 0;
   }
   
-  /* Scrollable section (tengah) */
   .sidebar-scrollable {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+    -webkit-overflow-scrolling: touch;
   }
   
-  /* Action buttons (bawah) */
   .action-buttons {
     flex-shrink: 0;
     margin-top: auto;
+  }
+  
+  #map-container {
+    width: 100%;
+    height: 55%;
+    order: 1;
+  }
+  
+  #map {
+    height: 100%;
   }
   
   /* Perbaikan tab group */
@@ -854,6 +856,7 @@ button, .btn {
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+    -webkit-overflow-scrolling: touch;
   }
   
   /* Rekomendasi */
@@ -876,6 +879,7 @@ button, .btn {
     white-space: normal;
     padding: 0 5px;
     line-height: 1.3;
+    text-shadow: none;
   }
   
   .header-icons {
@@ -893,12 +897,91 @@ button, .btn {
     justify-content: flex-end;
     bottom: 10px;
     right: 10px;
+    gap: 6px;
   }
   
   .map-control-btn {
     width: 32px;
     height: 32px;
     font-size: 0.8rem;
+  }
+  
+  /* Perbaikan form dan input */
+  .form-group label {
+    font-size: 0.85rem;
+  }
+  
+  .form-control, select, input {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+  
+  button, .btn {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Perbaikan tab buttons */
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 8px 4px;
+  }
+  
+  /* Perbaikan recommendation items */
+  .recommendation-item {
+    padding: 10px;
+  }
+  
+  .recommendation-value {
+    font-size: 1.1rem;
+  }
+  
+  .recommendation-label, .recommendation-rate {
+    font-size: 0.8rem;
+  }
+  
+  /* Perbaikan detail grid */
+  .detail-grid > div {
+    padding: 4px 0;
+    font-size: 0.85rem;
+  }
+  
+  .detail-grid span:first-child {
+    min-width: 80px;
+  }
+  
+  /* Perbaikan point popup */
+  .leaflet-popup-content {
+    font-size: 0.9rem;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    padding: var(--space-md) var(--space-sm);
+  }
+  
+  .empty-state i {
+    font-size: 2.5rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+  }
+  
+  /* Info item */
+  .info-item {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+  
+  .info-item .value {
+    font-size: 0.85rem;
+  }
+  
+  /* Tombol cetak */
+  #print-btn {
+    padding: 10px;
+    font-weight: bold;
   }
 }
 
@@ -910,7 +993,7 @@ button, .btn {
   }
   
   #app-header h1 {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
   
   #sidebar {
@@ -923,13 +1006,13 @@ button, .btn {
   }
   
   .tab-btn {
-    font-size: 0.85rem;
-    padding: 8px 5px;
+    font-size: 0.8rem;
+    padding: 6px 3px;
   }
   
   .btn {
-    padding: 0.5rem;
-    font-size: 0.9rem;
+    padding: 0.6rem;
+    font-size: 0.85rem;
   }
   
   .form-control {
@@ -942,11 +1025,28 @@ button, .btn {
   }
   
   .recommendation-value {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
   
   .recommendation-rate {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Perbaikan header sidebar */
+  .sidebar-header h2 {
+    font-size: 1rem;
+  }
+  
+  /* Perbaikan jarak konten */
+  .tab-content {
+    padding: 12px;
+  }
+  
+  /* Detail point */
+  .point-detail {
+    max-height: 25vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -959,9 +1059,34 @@ button, .btn {
   #map-container {
     height: 40%;
   }
+  
+  /* Mengurangi padding untuk landscape */
+  .sidebar-content {
+    gap: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 8px;
+  }
+  
+  .tab-content {
+    padding: 10px;
+  }
+  
+  /* Chart lebih kecil di landscape */
+  .chart-container {
+    height: 100px;
+    min-height: 100px;
+  }
+  
+  /* Rekomendasi grid 2 kolom di landscape */
+  .recommendation-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 }
 
-/* Perbaikan untuk tablet kecil */
+/* Tablet kecil hingga menengah */
 @media (min-width: 481px) and (max-width: 768px) {
   #sidebar {
     height: 40%;
@@ -970,24 +1095,160 @@ button, .btn {
   #map-container {
     height: 60%;
   }
+  
+  /* Rekomendasi grid 3 kolom untuk tablet kecil */
+  .recommendation-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  
+  /* Ukuran font lebih besar untuk tablet */
+  #app-header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .btn {
+    font-size: 0.95rem;
+  }
 }
 
 /* Perbaikan umum untuk semua perangkat mobile */
 @media (max-width: 768px) {
-  .sidebar-content {
-    gap: 12px;
+  /* Scroll halus untuk konten tab */
+  .tab-content {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
+  /* Alert */
+  .alert {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  /* Circle marker */
+  .circle-marker {
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+  }
+  
+  /* Sidebar header */
+  .sidebar-header {
+    padding: 8px 12px;
+  }
+  
+  /* Land info */
+  .land-info {
+    margin: 12px 0;
+    gap: 8px;
+  }
+  
+  /* Summary grid */
+  .summary-grid > div {
+    padding: 5px;
+    font-size: 0.85rem;
+  }
+  
+  /* Tombol aksi */
+  .map-control-btn {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  
+  /* Form group */
   .form-group {
     margin-bottom: 12px;
   }
   
-  .point-detail {
-    max-height: 25vh;
-    overflow-y: auto;
+  /* Input focus */
+  .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
   }
   
-  .empty-state p {
+  /* Tombol tab aktif */
+  .tab-btn.active {
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Pemisah konten */
+  .action-buttons {
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f8f8;
+  }
+}
+
+/* Perbaikan untuk layar sangat kecil (lebar < 350px) */
+@media (max-width: 350px) {
+  #app-header h1 {
+    font-size: 0.85rem;
+  }
+  
+  .tab-btn {
+    font-size: 0.75rem;
+    padding: 6px 2px;
+  }
+  
+  .detail-grid span:first-child {
+    min-width: 70px;
+    font-size: 0.8rem;
+  }
+  
+  .recommendation-value {
     font-size: 1rem;
   }
+  
+  .chart-container {
+    height: 90px;
+    min-height: 90px;
+  }
+}
+
+/* Animasi tambahan untuk feedback sentuhan */
+.btn:active, .map-control-btn:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Perbaikan untuk input number di mobile */
+input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Penanganan overflow untuk konten panjang */
+.tab-content, .point-detail, .sidebar-scrollable {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Perbaikan visual untuk marker distance */
+.distance-label {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Penyesuaian untuk leaflet popup */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.leaflet-popup-content {
+  margin: 10px;
+  font-size: 0.9rem;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none;
 }
