@@ -400,7 +400,6 @@ function createPointPopup(point, displayNumber) {
       <strong>Titik ${displayNumber}</strong>
       <div>Lat: ${point.lat.toFixed(6)}</div>
       <div>Lng: ${point.lng.toFixed(6)}</div>
-      <div>N: ${point.npk.nitrogen} ton</div>
       <div>P: ${point.npk.phosphate} mg/kg</div>
       <div>K: ${point.npk.kalium} mg/kg</div>
       <div>Sawah: ${point.sawah || 'Tidak diketahui'}</div>
@@ -418,7 +417,7 @@ function selectPoint(point, displayNumber) {
     <div><span>ID:</span> ${displayNumber}</div>
     <div><span>Latitude:</span> ${point.lat.toFixed(6)}</div>
     <div><span>Longitude:</span> ${point.lng.toFixed(6)}</div>
-    <div><span>Nitrogen:</span> ${point.npk.nitrogen} ton</div>
+    
     <div><span>Phosphate:</span> ${point.npk.phosphate} mg/kg</div>
     <div><span>Kalium:</span> ${point.npk.kalium} mg/kg</div>
     <div><span>Sawah:</span> ${point.sawah || 'Tidak diketahui'}</div>
@@ -431,7 +430,7 @@ function createPointPopup(point) {
       <strong>Titik ${point.id}</strong>
       <div>Lat: ${point.lat.toFixed(6)}</div>
       <div>Lng: ${point.lng.toFixed(6)}</div>
-      <div>N: ${point.npk.nitrogen} ton</div>
+      
       <div>P: ${point.npk.phosphate} mg/kg</div>
       <div>K: ${point.npk.kalium} mg/kg</div>
     </div>
