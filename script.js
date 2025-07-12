@@ -10,7 +10,7 @@ const CONFIG = {
   thingspeak: {
     channelId: '2625391',
     apiKey: 'E22JKJFSAT9OSD7K',
-    url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=E22JKJFSAT9OSD7K&results=180`
+    url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=E22JKJFSAT9OSD7K&results=240`
   },
   fields: {
     count: 8,
