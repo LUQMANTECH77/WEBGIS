@@ -8,9 +8,9 @@ const CONFIG = {
     maxNativeZoom: 19
   },
   thingspeak: {
-    channelId: '2625391',
-    apiKey: 'E22JKJFSAT9OSD7K',
-    url: `https://api.thingspeak.com/channels/2625391/feeds.json?api_key=E22JKJFSAT9OSD7K&results=240`
+    channelId: '2793679',
+    apiKey: 'FS7W06UYLZM153V3',
+    url: `https://api.thingspeak.com/channels/2793679/feeds.json?api_key=FS7W06UYLZM153V3&results=240`
   },
   fields: {
     count: 8,
@@ -393,21 +393,21 @@ function plotPoints(points) {
   }
 }
 
-// PERBAIKAN: Tambahkan displayNumber ke popup
+//============== displayNumber ke popup ==================
 function createPointPopup(point, displayNumber) {
   return `
     <div class="point-popup">
       <strong>Titik ${displayNumber}</strong>
       <div>Lat: ${point.lat.toFixed(6)}</div>
       <div>Lng: ${point.lng.toFixed(6)}</div>
-      <div>P: ${point.npk.phosphate} mg/kg</div>
-      <div>K: ${point.npk.kalium} mg/kg</div>
-      <div>Sawah: ${point.sawah || 'Tidak diketahui'}</div>
+      <div>P: ${point.npk.phosphate} mg/100g</div>
+      <div>K: ${point.npk.kalium} mg/100g</div>
+      
     </div>
   `;
 }
 
-// PERBAIKAN: Tambahkan displayNumber ke fungsi selectPoint
+//============= displayNumber ke fungsi selectPoint =========
 function selectPoint(point, displayNumber) {
   selectedPoint = point;  
   const pointDetails = document.getElementById('point-details');
@@ -420,21 +420,7 @@ function selectPoint(point, displayNumber) {
     
     <div><span>Phosphate:</span> ${point.npk.phosphate} mg/kg</div>
     <div><span>Kalium:</span> ${point.npk.kalium} mg/kg</div>
-    <div><span>Sawah:</span> ${point.sawah || 'Tidak diketahui'}</div>
-  `;
-}
-
-function createPointPopup(point) {
-  return `
-    <div class="point-popup">
-      <strong>Titik ${point.id}</strong>
-      <div>Lat: ${point.lat.toFixed(6)}</div>
-      <div>Lng: ${point.lng.toFixed(6)}</div>
-      
-      <div>P: ${point.npk.phosphate} mg/kg</div>
-      <div>K: ${point.npk.kalium} mg/kg</div>
-    </div>
-  `;
+      `;
 }
 
 function calculateFieldArea(points) {
@@ -466,8 +452,8 @@ function calculateFieldArea(points) {
       const area = turf.area(polygon) / 10000;
       const perimeter = turf.length(turf.lineString(coords)) * 1000;
       
-      document.getElementById('land-area').textContent = area.toFixed(2) + ' Ha';
-      document.getElementById('land-perimeter').textContent = perimeter.toFixed(2) + ' m';
+      document.getElementById('land-area').textContent = area.toFixed(5) + ' Ha';
+      document.getElementById('land-perimeter').textContent = perimeter.toFixed(5) + ' m';
       
       addDistanceLabels(points);
     }
@@ -664,21 +650,6 @@ function updateChart(urea, sp36, kcl, recommendation) {
       }
     }
   });
-}
-
-function selectPoint(point) {
-  selectedPoint = point;  
-  const pointDetails = document.getElementById('point-details');
-  pointDetails.style.display = 'block';
-  
-  pointDetails.querySelector('.detail-grid').innerHTML = `
-    <div><span>ID:</span> ${point.id}</div>
-    <div><span>Latitude:</span> ${point.lat.toFixed(6)}</div>
-    <div><span>Longitude:</span> ${point.lng.toFixed(6)}</div>
-    <div><span>Nitrogen:</span> ${point.npk.nitrogen} ton</div>
-    <div><span>Phosphate:</span> ${point.npk.phosphate} mg/kg</div>
-    <div><span>Kalium:</span> ${point.npk.kalium} mg/kg</div>
-  `;
 }
 
 function clearMap() {
@@ -945,8 +916,8 @@ function printReport() {
     ['Luas Lahan', `${luasLahan}`],
     ['Keliling Lahan', `${kelilingLahan}`],
     ['Rata-rata Nitrogen', `${avgNitrogen} ton`],
-    ['Rata-rata Phosphate', `${avgPhosphate} mg/kg`],
-    ['Rata-rata Kalium', `${avgKalium} mg/kg`]
+    ['Rata-rata Phosphate', `${avgPhosphate} mg/100g`],
+    ['Rata-rata Kalium', `${avgKalium} mg/100g`]
   ];
   
   doc.autoTable({
@@ -956,7 +927,7 @@ function printReport() {
     headStyles: { fillColor: [2, 136, 209] }
   });
   
-  const pointData = [['ID', 'Latitude', 'Longitude', 'P (mg/kg)', 'K (mg/kg)']];
+  const pointData = [['ID', 'Latitude', 'Longitude', 'P (mg/100g)', 'K (mg/100g)']];
   const fieldPoints = getFieldPoints(currentField);
   
   fieldPoints.forEach((point, index) => {
