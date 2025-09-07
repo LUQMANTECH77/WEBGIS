@@ -8,9 +8,9 @@ const CONFIG = {
     maxNativeZoom: 19
   },
   thingspeak: {
-    channelId: '',
-    apiKey: '',
-    url: `https://api.thingspeak.com/channels//feeds.json?api_key=&results=240`
+    channelId: '2793679',
+    apiKey: 'FS7W06UYLZM153V3',
+    url: `https://api.thingspeak.com/channels/2793679/feeds.json?api_key=FS7W06UYLZM153V3&results=240`
   },
   fields: {
     count: 8,
@@ -997,4 +997,5 @@ function calculateFertilizerRecommendation(avgN, avgP, avgK, area) {
     }
   };
 }
+
 
