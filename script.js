@@ -997,5 +997,3 @@ function calculateFertilizerRecommendation(avgN, avgP, avgK, area) {
     }
   };
 }
-
-
